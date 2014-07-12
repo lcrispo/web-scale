@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web@ScaleStep1", "ImageGalleryInMvc5\Web@ScaleStep1.csproj", "{56B71D16-26D7-427E-BE23-05E3CD1A10CA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web@ScaleStep1", "WebAtCloudScale\Web@ScaleStep1.csproj", "{56B71D16-26D7-427E-BE23-05E3CD1A10CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
