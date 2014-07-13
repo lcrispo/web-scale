@@ -5,19 +5,46 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage;
+using System.Web.Configuration;
+using Microsoft.WindowsAzure.Storage.Auth;
 
 namespace WebAtScale.Controllers
 {
     public class HomeController : Controller
     {
         private readonly DbConnectionContext db = new DbConnectionContext();
+        CloudStorageAccount account = new CloudStorageAccount(new StorageCredentials(WebConfigurationManager.AppSettings["StorageAccountName"], WebConfigurationManager.AppSettings["StorageAccount"]), false);
+        
+
+
+
         public ActionResult Index()
         {
+            CloudBlobClient client = account.CreateCloudBlobClient();
+            CloudBlobContainer container = client.GetContainerReference("webatscale");
+            container.CreateIfNotExists();
+            container.SetPermissions( new BlobContainerPermissions {PublicAccess = BlobContainerPublicAccessType.Blob});
+
             var imagesModel = new ImageGallery();
-            var imageFiles = Directory.GetFiles(Server.MapPath("~/Upload_Files/"));
-            foreach (var item in imageFiles)
+
+            if (WebConfigurationManager.AppSettings["BlobStore"] == "local")
             {
-                imagesModel.ImageList.Add(Path.GetFileName(item));
+                var imageFiles = Directory.GetFiles(Server.MapPath("~/Upload_Files/"));
+                foreach (var item in imageFiles)
+                {
+                    imagesModel.ImageList.Add("~/Upload_Files/" + Path.GetFileName(item));
+                }
+            
+            }
+            else 
+            {
+                var blobs = container.ListBlobs();
+                foreach (var item in blobs)
+                 {
+                     imagesModel.ImageList.Add(item.Uri.OriginalString);
+                 }
             }
             return View(imagesModel);
         }
