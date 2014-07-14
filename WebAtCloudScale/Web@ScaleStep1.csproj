@@ -150,6 +150,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\CDNHelper.cs" />
     <Compile Include="Models\DbConnectionContext.cs" />
     <Compile Include="Models\ImageGallery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

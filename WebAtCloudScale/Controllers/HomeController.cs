@@ -63,7 +63,30 @@ namespace WebAtScale.Controllers
                     HttpPostedFileBase file = Request.Files[i];
                     int fileSize = file.ContentLength;
                     string fileName = Request.Files.AllKeys[i];
-                    file.SaveAs(Server.MapPath("~/Upload_Files/" + fileName));
+                    if (WebConfigurationManager.AppSettings["BlobStore"] == "local")
+                    {
+                        file.SaveAs(Server.MapPath("~/Upload_Files/" + fileName));
+                    
+                    }
+                    else
+                    {
+                        CloudBlobClient client = account.CreateCloudBlobClient();
+                        CloudBlobContainer container = client.GetContainerReference("webatscale");
+                        var contentType = "application/octet-stream";
+                        switch (Path.GetExtension(fileName))
+                        {
+                            case "png": contentType = "image/png"; break;
+                            case "jpg": contentType = "image/png"; break;
+                        }
+
+                        var blob = container.GetBlockBlobReference(fileName);
+                        blob.Properties.ContentType = contentType;
+                        blob.Properties.CacheControl = "public, max-age=3600";
+                        blob.UploadFromStream(file.InputStream);
+                        blob.SetProperties();
+
+
+                    }
                     //ImageGallery imageGallery = new ImageGallery();
                     //imageGallery.ID = Guid.NewGuid();
                     //imageGallery.Name = fileName;
