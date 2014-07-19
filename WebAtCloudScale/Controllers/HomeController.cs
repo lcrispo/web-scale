@@ -15,17 +15,10 @@ namespace WebAtScale.Controllers
     public class HomeController : Controller
     {
         private readonly DbConnectionContext db = new DbConnectionContext();
-        CloudStorageAccount account = new CloudStorageAccount(new StorageCredentials(WebConfigurationManager.AppSettings["StorageAccountName"], WebConfigurationManager.AppSettings["StorageAccount"]), false);
+        CloudStorageAccount account = new CloudStorageAccount(new StorageCredentials(WebConfigurationManager.AppSettings["StorageAccountName"], WebConfigurationManager.AppSettings["StorageAccount"]), true);
         
-
-
-
         public ActionResult Index()
         {
-            CloudBlobClient client = account.CreateCloudBlobClient();
-            CloudBlobContainer container = client.GetContainerReference("webatscale");
-            container.CreateIfNotExists();
-            container.SetPermissions( new BlobContainerPermissions {PublicAccess = BlobContainerPublicAccessType.Blob});
 
             var imagesModel = new ImageGallery();
 
@@ -40,6 +33,12 @@ namespace WebAtScale.Controllers
             }
             else 
             {
+               
+                CloudBlobClient client = account.CreateCloudBlobClient();
+                CloudBlobContainer container = client.GetContainerReference("webatscale");
+                container.CreateIfNotExists();
+                container.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
+
                 var blobs = container.ListBlobs();
                 foreach (var item in blobs)
                  {
