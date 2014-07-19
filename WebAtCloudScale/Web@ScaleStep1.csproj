@@ -179,6 +179,7 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <None Include="Properties\PublishProfiles\webscalestep1.pubxml" />
+    <None Include="Properties\PublishProfiles\webscaleteststep.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\blank.gif" />
     <Content Include="Scripts\bootstrap.js" />
